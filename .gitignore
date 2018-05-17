@@ -4,7 +4,8 @@
 *.sln.docstates
 build_*
 
-3rd/*
+3rd/windows
+3rd/macos
 
 # Windows image file caches
 Thumbs.db
