@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>fonts/Baloo-Regular.ttf</file>
+        <file>fonts/FontAwesome.otf</file>
+        <file>MainView.qml</file>
+    </qresource>
+</RCC>
