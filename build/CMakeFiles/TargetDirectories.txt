@@ -1,0 +1,5 @@
+/Users/jimmy/Projects/QuickOSG/build/CMakeFiles/install.dir
+/Users/jimmy/Projects/QuickOSG/build/CMakeFiles/QuickOSG.dir
+/Users/jimmy/Projects/QuickOSG/build/CMakeFiles/QuickOSG_autogen.dir
+/Users/jimmy/Projects/QuickOSG/build/CMakeFiles/ALL_BUILD.dir
+/Users/jimmy/Projects/QuickOSG/build/CMakeFiles/ZERO_CHECK.dir

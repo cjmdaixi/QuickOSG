@@ -13,7 +13,7 @@ add_definitions(-DMAJOR_VERSION=${PROJECT_VERSION_MAJOR} -DMINOR_VERSION=${PROJE
 set(CMAKE_VS_INCLUDE_INSTALL_TO_DEFAULT_BUILD ON)
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
-set(CMAKE_PREFIX_PATH $ENV{QTDIR594_64})
+set(CMAKE_PREFIX_PATH $ENV{QTDIR595_64})
 
 find_package(Qt5 COMPONENTS Core Gui Xml Qml Quick LinguistTools OpenGL REQUIRED)
 
@@ -29,6 +29,8 @@ if(MSVC)
         set(OSG_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rd/windows/x64/OSG)
         set(OSG3rd_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rd/windows/x64/OSG_3rd)
     endif()
+elseif(APPLE)
+    set(OSG_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rd/macos/OSG)
 endif()
 
 find_package(OpenSceneGraph COMPONENTS  osgUtil osgDB osgText osgViewer osgGA osgManipulator osgAnimation osgWidget REQUIRED)
