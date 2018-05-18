@@ -3,6 +3,7 @@
 *.user
 *.sln.docstates
 build_*
+build
 
 3rd/windows
 3rd/macos
