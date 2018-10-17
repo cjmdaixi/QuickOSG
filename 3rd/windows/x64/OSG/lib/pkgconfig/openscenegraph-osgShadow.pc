@@ -1,0 +1,14 @@
+# pkg-config source file
+
+prefix=C:/Users/Jimmy/Desktop/OpenSceneGraph
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: openscenegraph-osgShadow
+Description: Shadow techniques library for Openscenegraph
+Version: 3.6.1
+Requires: openscenegraph-osgUtil openscenegraph-osgDB openscenegraph-osg openthreads
+Conflicts:
+Libs: -L${libdir} -losgShadow
+Cflags: -I${includedir}

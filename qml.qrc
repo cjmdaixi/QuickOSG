@@ -1,9 +1,13 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>qtquickcontrols2.conf</file>
-        <file>fonts/Baloo-Regular.ttf</file>
-        <file>fonts/FontAwesome.otf</file>
-        <file>MainView.qml</file>
+        <file>ui/MainView.qml</file>
+        <file>ui/BluredCover.qml</file>
+        <file>shaders/final_pass.frag</file>
+        <file>shaders/hud.vert</file>
+        <file>shaders/disc_render.frag</file>
+        <file>shaders/disc_render.vert</file>
+        <file>shaders/mesh.frag</file>
+        <file>shaders/mesh.vert</file>
     </qresource>
 </RCC>

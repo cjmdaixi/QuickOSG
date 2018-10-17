@@ -1,69 +1,141 @@
-﻿#ifndef _APP_GLOBAL_H
-#define _APP_GLOBAL_H
+#ifndef APPGLOBAL_H
+#define APPGLOBAL_H
 
 #include <QObject>
-#include <QQmlComponent>
-#include <QQmlEngine>
-#include <QColor>
-#include <QThread>
 #include <QVariantMap>
-#include <QQuickItem>
-#include <QTimer>
-#include <QSysInfo>
-#include <QVersionNumber>
 #include <osg/Node>
 #include <osg/Group>
 #include <osgDB/ReaderWriter>
+#include <osgDB/ReadFile>
+#include <QFileInfo>
+#include <QThread>
+
+class QuickOSGViewer;
+class AppWorker;
 
 class AppGlobal : public QObject
 {
     Q_OBJECT
+    QString m_language = "en";
+    QString m_langToken;
+    QVariantMap m_busy = QVariantMap{{"status", false},{"reason", ""}};
+    QVariantMap m_progressInfo = QVariantMap{{"visible", false}, {"title", ""},{"from", 0}, {"to", 100}};
+    float m_progressValue = 0;
+    QThread* m_workerThread = nullptr;
+    AppWorker* m_worker = nullptr;
+
+    QuickOSGViewer* m_viewer = nullptr;
+
 public:
-    Q_PROPERTY(QString fontAwesome READ fontAwesome CONSTANT)
-    Q_PROPERTY(QString fontFamily MEMBER m_fontFamily NOTIFY fontFamilyChanged)
+    Q_PROPERTY(QString language READ language WRITE setLanguage NOTIFY languageChanged)
+    Q_PROPERTY(QString langToken READ langToken NOTIFY langTokenChanged)
+    Q_PROPERTY(QVariantMap busy READ busy WRITE setBusy NOTIFY busyChanged)
+    Q_PROPERTY(QVariantMap progressInfo READ progressInfo WRITE setProgressInfo NOTIFY progressInfoChanged)
+    Q_PROPERTY(float progressValue READ progressValue WRITE setProgressValue NOTIFY progressValueChanged)
+    Q_PROPERTY(QuickOSGViewer* viewer READ viewer WRITE setViewer NOTIFY viewerChanged)
 
-	Q_PROPERTY(int majorVersion READ majorVersion CONSTANT)
-	Q_PROPERTY(int minorVersion READ minorVersion CONSTANT)
-	Q_PROPERTY(int patchVersion READ patchVersion CONSTANT)
-	Q_PROPERTY(QString version READ version CONSTANT)
-
-	Q_PROPERTY(osg::Node* sceneNode READ sceneNode NOTIFY sceneNodeChanged)
-
-    explicit AppGlobal(QObject *parent = 0);
+    explicit AppGlobal(QObject *parent = nullptr);
     ~AppGlobal();
 
-    QString fontAwesome() const;
-    Q_INVOKABLE QString iconText(QString iconName) const;
+    QString language() const
+    {
+        return m_language;
+    }
 
-	int majorVersion() const { return m_version.majorVersion(); }
-	int minorVersion() const { return m_version.minorVersion(); }
-	int patchVersion() const { return m_version.microVersion(); }
-	QString version() const { return m_version.toString(); }
+    QString langToken() const
+    {
+        return m_langToken;
+    }
 
-	osg::Node* sceneNode() const { return m_sceneNode.get(); }
-public slots:
-	osg::Node* loadModelFile(const QString &filePath);
+    QVariantMap busy() const
+    {
+        return m_busy;
+    }
+
+    QVariantMap progressInfo() const
+    {
+        return m_progressInfo;
+    }
+
+    float progressValue() const
+    {
+        return m_progressValue;
+    }
+
+    QuickOSGViewer* viewer() const
+    {
+        return m_viewer;
+    }
+
 signals:
-    void fontFamilyChanged();
 
-    void minimize();
-    void maximize();
-	void tryQuit();
-    void quit();
+    void languageChanged(QString language);
 
-	void sceneNodeChanged();
-private slots:
+    void langTokenChanged(QString langToken);
 
-private:
-	void setupAwesomeFont();
-	void setupActions();
-private:
-    int m_faId = -1;
-    QMap<QString, QString> m_faMapping;
-    QString m_fontFamily = "Microsoft YaHei UI";
+    void busyChanged(QVariantMap busy);
 
-	QVersionNumber m_version = QVersionNumber(MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION);
-	osg::ref_ptr<osg::Group> m_sceneNode;
+    void progressInfoChanged(QVariantMap progressInfo);
+
+    void progressValueChanged(float progressValue);
+    void modelLoaded(osg::Node* node);
+    void errorHappened(QString msg);
+
+    void viewerChanged(QuickOSGViewer* viewer);
+
+public slots:
+    void setLanguage(QString language)
+    {
+        if (m_language == language)
+            return;
+
+        m_language = language;
+        emit languageChanged(m_language);
+    }
+    void setBusy(QVariantMap busy)
+    {
+        if (m_busy == busy)
+            return;
+
+        m_busy = busy;
+        emit busyChanged(m_busy);
+    }
+    void setProgressInfo(QVariantMap progressInfo)
+    {
+        if (m_progressInfo == progressInfo)
+            return;
+
+        m_progressInfo = progressInfo;
+        emit progressInfoChanged(m_progressInfo);
+    }
+    void setProgressValue(float progressValue)
+    {
+        if (qFuzzyCompare(m_progressValue, progressValue))
+            return;
+
+        m_progressValue = progressValue;
+        emit progressValueChanged(m_progressValue);
+    }
+    osg::Node* loadModelFile(const QString &filePath){
+        auto node = osgDB::readNodeFile(filePath.toStdString());
+        return node;
+    }
+    QString fileSuffix(const QString &filePath) {
+        QFileInfo info(filePath);
+        return info.suffix();
+    }
+
+    void loadRaw(const QString& filePath);
+    void loadPointCloud(const QString& filePath);
+    void loadObj(const QString& filePath);
+    void setViewer(QuickOSGViewer* viewer)
+    {
+        if (m_viewer == viewer)
+            return;
+
+        m_viewer = viewer;
+        emit viewerChanged(m_viewer);
+    }
 };
 
-#endif // _APP_GLOBAL_H
+#endif // APPGLOBAL_H
