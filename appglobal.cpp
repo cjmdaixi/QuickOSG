@@ -17,11 +17,6 @@ AppGlobal::~AppGlobal()
     m_workerThread->wait();
 }
 
-void AppGlobal::loadRaw(const QString &filePath)
-{
-    QMetaObject::invokeMethod(m_worker, "loadRaw", Qt::QueuedConnection, Q_ARG(QString, filePath));
-}
-
 void AppGlobal::loadPointCloud(const QString &filePath)
 {
     QMetaObject::invokeMethod(m_worker, "loadPointCloud", Qt::QueuedConnection, Q_ARG(QString, filePath));

@@ -22,7 +22,6 @@ public:
 
 signals:
 public slots:
-    void loadRaw(const QString& filePath);
     void loadPointCloud(const QString& filePath);
     void loadObj(const QString& filePath);
 private:

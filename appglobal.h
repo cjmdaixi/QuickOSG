@@ -125,7 +125,6 @@ public slots:
         return info.suffix();
     }
 
-    void loadRaw(const QString& filePath);
     void loadPointCloud(const QString& filePath);
     void loadObj(const QString& filePath);
     void setViewer(QuickOSGViewer* viewer)
